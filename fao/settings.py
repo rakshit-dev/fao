@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -133,6 +133,48 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# If folder doesn't exist, then create it.
+if not os.path.isdir("logs"):
+    os.makedirs("logs")
+
+# DataFlair #Logging Information
+LOGGING = {
+    'version': 1,
+    # Version of logging
+    'disable_existing_loggers': False,
+    #disable logging 
+    # Handlers
+    'handlers': {
+        'debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/debug.log',
+        },
+        'info': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/info.log',
+        },
+        'error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/error.log',
+        },
+    },
+    # Loggers
+    'loggers': {
+        'django': {
+            'handlers': ['debug',"info","error"],
+            'level': 'DEBUG',
+            'level': 'INFO',
+            'level': 'ERROR',
+            'propagate': True,
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG')
+        },
+    },
+}
 
 
 # Static files (CSS, JavaScript, Images)
